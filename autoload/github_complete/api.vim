@@ -27,7 +27,7 @@ function! github_complete#api#call_sync(path, params)
         let headers.Authorization = 'token ' . g:github_complete_github_api_token
     endif
     let response = s:H.request({
-        \ 'url' : 'https://api.github.com/' . a:path,
+        \ 'url' : g:github_complete_github_endpoint_url . a:path,
         \ 'headers' : headers,
         \ 'method' : 'GET',
         \ 'param' : a:params,
@@ -82,7 +82,7 @@ function! github_complete#api#fetch_call_async(path, params, consider_cache)
         let headers.Authorization = 'token ' . g:github_complete_github_api_token
     endif
     let request = s:H.request_async({
-        \ 'url' : 'https://api.github.com/' . a:path,
+        \ 'url' : g:github_complete_github_endpoint_url . a:path,
         \ 'headers' : headers,
         \ 'method' : 'GET',
         \ 'param' : a:params,
@@ -112,7 +112,7 @@ function! s:response_of(request, key)
         call a:request.process.stderr.close()
         unlet! s:working_processes[a:key]
 
-        call github_complete#error('Failed to call API https://api.github.com/' . a:path)
+        call github_complete#error('Failed to call API ' . g:github_complete_github_endpoint_url . a:path)
         return s:O.none()
     else
         " Note: process has not been done yet.
